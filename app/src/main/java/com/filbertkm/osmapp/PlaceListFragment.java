@@ -56,14 +56,13 @@ public class PlaceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_placelist, container, false);
 
         listView = (ListView) view.findViewById(R.id.placelist_field);
 
-        adapter = new ArrayAdapter(
+        adapter = new PlaceListAdapter(
            getActivity(),
-           android.R.layout.simple_list_item_1,
+           R.layout.placelist_item_row,
            placeList
         );
 
