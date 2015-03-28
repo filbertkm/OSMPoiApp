@@ -6,27 +6,20 @@ import java.util.Locale;
 
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
 
 public class MainActivity extends ActionBarActivity
     implements MapFragment.OnBoundingBoxChange,
-        PlaceFragment.OnFragmentInteractionListener {
+        PlaceListFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -84,8 +77,8 @@ public class MainActivity extends ActionBarActivity
         if (currentIndex == 0) {
             //
         } else {
-            PlaceFragment.OnFragmentInteractionListener placeFragment =
-                    (PlaceFragment.OnFragmentInteractionListener) adapter.instantiateItem(mViewPager, currentIndex);
+            PlaceListFragment.OnFragmentInteractionListener placeFragment =
+                    (PlaceListFragment.OnFragmentInteractionListener) adapter.instantiateItem(mViewPager, currentIndex);
             placeFragment.onFragmentInteraction(uri);
         }
     }
@@ -111,8 +104,8 @@ public class MainActivity extends ActionBarActivity
 
         private void createFragments() {
             fragments.add(MapFragment.newInstance());
-            fragments.add(PlaceFragment.newInstance());
-            fragments.add(PlaceFragment.newInstance());
+            fragments.add(PlaceListFragment.newInstance());
+            fragments.add(PlaceListFragment.newInstance());
         }
 
         @Override
@@ -127,8 +120,8 @@ public class MainActivity extends ActionBarActivity
         }
 
         public void updatePlaceFragment(BoundingBox boundingBox) {
-            PlaceFragment placeFragment = (PlaceFragment)fragments.get(1);
-            placeFragment.updateBoundingBox(boundingBox);
+            PlaceListFragment placeListFragment = (PlaceListFragment)fragments.get(1);
+            placeListFragment.updateBoundingBox(boundingBox);
         }
 
         @Override

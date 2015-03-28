@@ -9,35 +9,41 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.filbertkm.osmapi.OSMClient;
 import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
-public class PlaceFragment extends Fragment {
+public class PlaceListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView capabilitiesField;
+    private ListView listView;
+
+    private ArrayList<String> placeList = new ArrayList<String>();
+
+    private ArrayAdapter adapter;
 
     Handler handler;
 
     /**
-     * @return A new instance of fragment PlaceFragment.
+     * @return A new instance of fragment PlaceListFragment.
      */
-    public static PlaceFragment newInstance() {
-        PlaceFragment fragment = new PlaceFragment();
+    public static PlaceListFragment newInstance() {
+        PlaceListFragment fragment = new PlaceListFragment();
 
         return fragment;
     }
 
-    public PlaceFragment() {
+    public PlaceListFragment() {
         handler = new Handler();
     }
 
@@ -51,9 +57,17 @@ public class PlaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_place, container, false);
+        View view = inflater.inflate(R.layout.fragment_placelist, container, false);
 
-        capabilitiesField = (TextView) view.findViewById(R.id.capabilities_field);
+        listView = (ListView) view.findViewById(R.id.placelist_field);
+
+        adapter = new ArrayAdapter(
+           getActivity(),
+           android.R.layout.simple_list_item_1,
+           placeList
+        );
+
+        listView.setAdapter(adapter);
 
         return view;
     }
@@ -62,13 +76,14 @@ public class PlaceFragment extends Fragment {
         new Thread() {
             public void run() {
                 OSMClient osmClient = new OSMClient();
-                final String capabilities = osmClient.getCapabilities();
+          //      final String capabilities = osmClient.getCapabilities();
 
-                handler.post(new Runnable() {
+          /*      handler.post(new Runnable() {
                     public void run() {
-                        capabilitiesField.setText(capabilities);
+                        listView.setText(capabilities);
                     }
                 });
+            */
             }
         }.start();
     }
@@ -85,15 +100,12 @@ public class PlaceFragment extends Fragment {
 
         new Thread() {
             public void run() {
-                Log.i("osmapp", "update bounding box");
                 OSMClient osmClient = new OSMClient();
                 final List<OSMNode> nodes = osmClient.fetchNodesFromBoundingBox(bbox);
 
                 if(nodes == null) {
                     return;
                 }
-
-                String output = "";
 
                 for (OSMNode node : nodes) {
                     Map tags = node.getTags();
@@ -105,19 +117,17 @@ public class PlaceFragment extends Fragment {
                             while (entries.hasNext()) {
                                 Map.Entry thisEntry = (Map.Entry) entries.next();
 
-                                output +=
-                                        " - " + thisEntry.getKey() +
-                                        " - " + thisEntry.getValue() + "\n";
+                                if (thisEntry.getKey().toString().equals("name")) {
+                                    placeList.add(thisEntry.getValue().toString());
+                                }
                             }
                         }
                     }
                 }
 
-                final String textOutput = output;
-
                 handler.post(new Runnable() {
                     public void run() {
-                        capabilitiesField.setText(textOutput);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             }

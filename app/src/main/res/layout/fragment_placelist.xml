@@ -3,15 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.filbertkm.osmapp.PlaceFragment">
+    tools:context="com.filbertkm.osmapp.PlaceListFragment">
 
-    <TextView
-        android:id="@+id/capabilities_field"
+    <ListView
+        android:id="@+id/placelist_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="capabilities"
-        android:textSize="18sp"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
