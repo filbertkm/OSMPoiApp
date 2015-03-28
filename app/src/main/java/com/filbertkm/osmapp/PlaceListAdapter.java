@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class PlaceListAdapter extends ArrayAdapter<String> {
+public class PlaceListAdapter extends ArrayAdapter<Place> {
 
-    public PlaceListAdapter(Context context, int resourceId, List<String> list) {
+    public PlaceListAdapter(Context context, int resourceId, List<Place> list) {
         super(context, resourceId, list);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String item = getItem(position);
+        Place place = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
@@ -29,7 +29,7 @@ public class PlaceListAdapter extends ArrayAdapter<String> {
         }
 
         TextView textView = (TextView) convertView.findViewById(R.id.place_name);
-        textView.setText(item);
+        textView.setText(place.getName());
 
         return convertView;
 

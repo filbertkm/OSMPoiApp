@@ -28,7 +28,7 @@ public class PlaceListFragment extends Fragment {
 
     private ListView listView;
 
-    private ArrayList<String> placeList = new ArrayList<String>();
+    private ArrayList<Place> placeList = new ArrayList<>();
 
     private ArrayAdapter adapter;
 
@@ -111,18 +111,23 @@ public class PlaceListFragment extends Fragment {
 
                     if (tags != null) {
                         if (tags.containsKey("name")) {
+                            Place place = new Place();
                             Iterator entries = tags.entrySet().iterator();
 
                             while (entries.hasNext()) {
                                 Map.Entry thisEntry = (Map.Entry) entries.next();
 
                                 if (thisEntry.getKey().toString().equals("name")) {
-                                    placeList.add(thisEntry.getValue().toString());
+                                    place.setName(thisEntry.getValue().toString());
                                 }
                             }
+
+                            placeList.add(place);
                         }
                     }
                 }
+
+                Log.i("osmapp", "placelist");
 
                 handler.post(new Runnable() {
                     public void run() {
