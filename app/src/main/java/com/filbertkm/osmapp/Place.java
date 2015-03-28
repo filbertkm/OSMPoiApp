@@ -7,7 +7,7 @@ public class Place {
 
     private String parentType;
 
-    private String type;
+    private String type = "other";
 
     private String name;
 

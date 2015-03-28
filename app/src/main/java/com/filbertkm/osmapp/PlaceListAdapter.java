@@ -28,8 +28,11 @@ public class PlaceListAdapter extends ArrayAdapter<Place> {
             );
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.place_name);
-        textView.setText(place.getName());
+        TextView nameTextView = (TextView) convertView.findViewById(R.id.place_name);
+        nameTextView.setText(place.getName());
+
+        TextView typeTextView = (TextView) convertView.findViewById(R.id.place_type);
+        typeTextView.setText(place.getType());
 
         return convertView;
 

@@ -117,17 +117,30 @@ public class PlaceListFragment extends Fragment {
                             while (entries.hasNext()) {
                                 Map.Entry thisEntry = (Map.Entry) entries.next();
 
-                                if (thisEntry.getKey().toString().equals("name")) {
-                                    place.setName(thisEntry.getValue().toString());
+                                String tagName = thisEntry.getKey().toString();
+                                String tagValue = thisEntry.getValue().toString().replace("_", " ");
+
+                                switch(tagName) {
+                                    case "name":
+                                        place.setName(tagValue);
+                                        break;
+                                    case "amenity":
+                                        place.setType(tagValue);
+                                        break;
+                                    case "shop":
+                                        place.setType(tagValue);
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
+
+                            place.setTags(tags);
 
                             placeList.add(place);
                         }
                     }
                 }
-
-                Log.i("osmapp", "placelist");
 
                 handler.post(new Runnable() {
                     public void run() {
