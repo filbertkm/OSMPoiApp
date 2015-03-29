@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -21,7 +22,7 @@ public class MapFragment extends Fragment {
 
     public static MapFragment newInstance(MapListener mapListener) {
         MapFragment fragment = new MapFragment();
-        fragment.setMapListener(mapListener);
+        fragment.setMapListener(new DelayedMapListener(mapListener));
 
         return fragment;
     }
