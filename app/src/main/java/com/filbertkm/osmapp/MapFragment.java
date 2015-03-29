@@ -8,26 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
 
 
 public class MapFragment extends Fragment {
 
-    private SectionsPagerAdapter adapter;
+    private MapListener mapListener;
 
-    MapView mapView;
+    private MapView mapView;
 
-    public static MapFragment newInstance(SectionsPagerAdapter adapter) {
+    public static MapFragment newInstance(MapListener mapListener) {
         MapFragment fragment = new MapFragment();
-        fragment.setAdapter(adapter);
+        fragment.setMapListener(mapListener);
 
         return fragment;
     }
 
-    public void setAdapter(SectionsPagerAdapter adapter) {
-        this.adapter = adapter;
+    public void setMapListener(MapListener mapListener) {
+        this.mapListener = mapListener;
     }
 
     @Override
@@ -57,10 +57,7 @@ public class MapFragment extends Fragment {
         mapView.setUserLocationEnabled(true);
         mapView.goToUserLocation(true);
 
-        PlaceListFragment placeListFragment = this.adapter.getPlaceListFragment();
-
-        //placeListFragment.updateBoundingBox(mapView.getBoundingBox());
-        mapView.addListener(placeListFragment);
+        mapView.addListener(this.mapListener);
     }
 
     @Override

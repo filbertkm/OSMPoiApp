@@ -30,8 +30,6 @@ import java.util.Map;
 public class PlaceListFragment extends Fragment
     implements MapListener {
 
-    private OnFragmentInteractionListener mListener;
-
     private ListView listView;
 
     private ArrayList<Place> placeList = new ArrayList<>();
@@ -93,13 +91,6 @@ public class PlaceListFragment extends Fragment
         }.start();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     public void updateBoundingBox(BoundingBox boundingBox) {
         final BoundingBox bbox = boundingBox;
 
@@ -159,25 +150,7 @@ public class PlaceListFragment extends Fragment
         }.start();
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     public void onScroll(ScrollEvent event) {
-        Log.i("osmapp", "onscroll");
         MapView mapView = event.getSource();
         this.updateBoundingBox(mapView.getBoundingBox());
     }
@@ -188,11 +161,6 @@ public class PlaceListFragment extends Fragment
 
     public void onRotate(RotateEvent event) {
 
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

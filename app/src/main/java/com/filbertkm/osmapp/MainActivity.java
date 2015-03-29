@@ -18,34 +18,25 @@ import android.widget.Adapter;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
 
-public class MainActivity extends ActionBarActivity
-    implements PlaceListFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    SectionsPagerAdapter sectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this);
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.setAdapter(sectionsPagerAdapter);
     }
 
     @Override
@@ -59,26 +50,11 @@ public class MainActivity extends ActionBarActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        SectionsPagerAdapter adapter = (SectionsPagerAdapter) mViewPager.getAdapter();
-        int currentIndex = mViewPager.getCurrentItem();
-
-        if (currentIndex == 0) {
-            //
-        } else {
-            PlaceListFragment.OnFragmentInteractionListener placeFragment =
-                    (PlaceListFragment.OnFragmentInteractionListener) adapter.instantiateItem(mViewPager, currentIndex);
-            placeFragment.onFragmentInteraction(uri);
-        }
     }
 
 }

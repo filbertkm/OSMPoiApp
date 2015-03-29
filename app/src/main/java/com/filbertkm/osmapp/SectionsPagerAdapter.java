@@ -30,9 +30,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void createFragments() {
-        fragments.add(MapFragment.newInstance(this));
-        fragments.add(PlaceListFragment.newInstance());
-        fragments.add(PlaceListFragment.newInstance());
+        PlaceListFragment placeListFragment = PlaceListFragment.newInstance();
+
+        fragments.add(MapFragment.newInstance(placeListFragment));
+        fragments.add(placeListFragment);
     }
 
     @Override
@@ -42,21 +43,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
-        return 3;
-    }
-
-    public Fragment getMapFragment() {
-        return fragments.get(0);
-    }
-
-    public PlaceListFragment getPlaceListFragment() {
-        return (PlaceListFragment)fragments.get(1);
-    }
-
-    public void updatePlaceFragment(BoundingBox boundingBox) {
-        PlaceListFragment placeListFragment = (PlaceListFragment)fragments.get(1);
-        placeListFragment.updateBoundingBox(boundingBox);
+        return 2;
     }
 
     @Override
@@ -67,8 +54,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return this.activity.getString(R.string.title_section1).toUpperCase(l);
             case 1:
                 return this.activity.getString(R.string.title_section2).toUpperCase(l);
-            case 2:
-                return this.activity.getString(R.string.title_section3).toUpperCase(l);
         }
         return null;
     }
