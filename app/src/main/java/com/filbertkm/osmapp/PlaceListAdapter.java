@@ -35,7 +35,6 @@ public class PlaceListAdapter extends ArrayAdapter<Place> {
         typeTextView.setText(place.getType());
 
         return convertView;
-
     }
 
 }
