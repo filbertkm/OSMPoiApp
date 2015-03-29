@@ -15,13 +15,19 @@ import com.mapbox.mapboxsdk.views.MapView;
 
 public class MapFragment extends Fragment {
 
-    private OnBoundingBoxChange mListener;
+    private SectionsPagerAdapter adapter;
 
     MapView mapView;
 
-    public static MapFragment newInstance() {
+    public static MapFragment newInstance(SectionsPagerAdapter adapter) {
         MapFragment fragment = new MapFragment();
+        fragment.setAdapter(adapter);
+
         return fragment;
+    }
+
+    public void setAdapter(SectionsPagerAdapter adapter) {
+        this.adapter = adapter;
     }
 
     @Override
@@ -37,13 +43,6 @@ public class MapFragment extends Fragment {
 
         initializeMap();
 
-        v.post(new Runnable() {
-            @Override
-            public void run() {
-                loadOSMLayer();
-            }
-        });
-
         return v;
     }
 
@@ -57,40 +56,21 @@ public class MapFragment extends Fragment {
         mapView.setZoom(18);
         mapView.setUserLocationEnabled(true);
         mapView.goToUserLocation(true);
-    }
 
-    private void loadOSMLayer() {
-        if(mapView.getZoomLevel() < 16) {
-            // not allowed
-            return;
-        }
+        PlaceListFragment placeListFragment = this.adapter.getPlaceListFragment();
 
-        BoundingBox boundingBox = mapView.getBoundingBox();
-
-        if (mListener != null) {
-            mListener.onBoundingBoxChange(boundingBox);
-        }
+        //placeListFragment.updateBoundingBox(mapView.getBoundingBox());
+        mapView.addListener(placeListFragment);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnBoundingBoxChange) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnBoundingBoxChange");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnBoundingBoxChange {
-        public void onBoundingBoxChange(BoundingBox boundingBox);
     }
 
 }

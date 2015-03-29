@@ -13,13 +13,13 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
 
 public class MainActivity extends ActionBarActivity
-    implements MapFragment.OnBoundingBoxChange,
-        PlaceListFragment.OnFragmentInteractionListener {
+    implements PlaceListFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -41,14 +41,12 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,62 +78,6 @@ public class MainActivity extends ActionBarActivity
             PlaceListFragment.OnFragmentInteractionListener placeFragment =
                     (PlaceListFragment.OnFragmentInteractionListener) adapter.instantiateItem(mViewPager, currentIndex);
             placeFragment.onFragmentInteraction(uri);
-        }
-    }
-
-    public void onBoundingBoxChange(BoundingBox boundingBox) {
-        SectionsPagerAdapter adapter = (SectionsPagerAdapter) mViewPager.getAdapter();
-        adapter.updatePlaceFragment(boundingBox);
-    }
-
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private List<Fragment> fragments = new ArrayList();
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-            createFragments();
-        }
-
-        private void createFragments() {
-            fragments.add(MapFragment.newInstance());
-            fragments.add(PlaceListFragment.newInstance());
-            fragments.add(PlaceListFragment.newInstance());
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        public void updatePlaceFragment(BoundingBox boundingBox) {
-            PlaceListFragment placeListFragment = (PlaceListFragment)fragments.get(1);
-            placeListFragment.updateBoundingBox(boundingBox);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
         }
     }
 

@@ -14,7 +14,12 @@ import android.widget.ListView;
 
 import com.filbertkm.osmapi.OSMClient;
 import com.filbertkm.osmxml.OSMNode;
+import com.mapbox.mapboxsdk.events.MapListener;
+import com.mapbox.mapboxsdk.events.RotateEvent;
+import com.mapbox.mapboxsdk.events.ScrollEvent;
+import com.mapbox.mapboxsdk.events.ZoomEvent;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.views.MapView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PlaceListFragment extends Fragment {
+public class PlaceListFragment extends Fragment
+    implements MapListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,6 +108,8 @@ public class PlaceListFragment extends Fragment {
                 OSMClient osmClient = new OSMClient();
                 final List<OSMNode> nodes = osmClient.fetchNodesFromBoundingBox(bbox);
 
+                placeList.clear();
+
                 if(nodes == null) {
                     return;
                 }
@@ -166,6 +174,20 @@ public class PlaceListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onScroll(ScrollEvent event) {
+        Log.i("osmapp", "onscroll");
+        MapView mapView = event.getSource();
+        this.updateBoundingBox(mapView.getBoundingBox());
+    }
+
+    public void onZoom(ZoomEvent event) {
+
+    }
+
+    public void onRotate(RotateEvent event) {
+
     }
 
     public interface OnFragmentInteractionListener {
