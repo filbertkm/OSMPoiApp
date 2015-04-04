@@ -3,13 +3,13 @@ package com.filbertkm.osmapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
 
@@ -19,6 +19,10 @@ public class MapFragment extends Fragment {
     private MapListener mapListener;
 
     private MapView mapView;
+
+    private float zoom = 18;
+
+    private LatLng center;
 
     public static MapFragment newInstance(MapListener mapListener) {
         MapFragment fragment = new MapFragment();
@@ -34,6 +38,11 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            zoom = savedInstanceState.getFloat("zoom");
+            center = savedInstanceState.getParcelable("center");
+        }
     }
 
     @Override
@@ -54,11 +63,32 @@ public class MapFragment extends Fragment {
         );
 
         mapView.setTileSource(tileSource);
-        mapView.setZoom(18);
-        mapView.setUserLocationEnabled(true);
-        mapView.goToUserLocation(true);
+        mapView.setZoom(zoom);
 
-        mapView.addListener(this.mapListener);
+        if (center == null) {
+            mapView.setUserLocationEnabled(true);
+            mapView.goToUserLocation(true);
+        } else {
+            mapView.setCenter(center);
+        }
+
+        mapView.addListener(mapListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        zoom = mapView.getZoomLevel();
+        center = mapView.getCenter();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putFloat("zoom", mapView.getZoomLevel());
+        savedInstanceState.putParcelable("center", mapView.getCenter());
     }
 
     @Override

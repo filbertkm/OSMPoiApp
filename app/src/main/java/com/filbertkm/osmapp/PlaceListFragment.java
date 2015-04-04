@@ -1,5 +1,6 @@
 package com.filbertkm.osmapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,39 +46,56 @@ public class PlaceListFragment extends Fragment
 
         listView = (ListView) view.findViewById(R.id.placelist_field);
 
-        adapter = new PlaceListAdapter(
-           getActivity(),
-           R.layout.placelist_item_row,
-           placeList
-        );
+        if (placeListUpdater == null) {
+            initPlaceListUpdater(getActivity());
+        }
 
         listView.setAdapter(adapter);
-        placeListUpdater = new PlaceListUpdater(adapter, placeList);
 
         return view;
     }
 
-    public void updateBoundingBox(BoundingBox boundingBox) {
-        placeListUpdater.updateBoundingBox(boundingBox);
-        placeList = placeListUpdater.getPlaceList();
-    }
-
     public void onScroll(ScrollEvent event) {
-        MapView mapView = event.getSource();
-
-        if(mapView.getZoomLevel() < 16) {
-            return;
-        }
-
-        this.updateBoundingBox(mapView.getBoundingBox());
+        // @fixme add getSource to MapEvent interface
+        updatePlaceListFromMapView(event.getSource());
     }
 
     public void onZoom(ZoomEvent event) {
-
+        updatePlaceListFromMapView(event.getSource());
     }
 
     public void onRotate(RotateEvent event) {
 
+    }
+
+    private void updatePlaceListFromMapView(MapView mapView) {
+        Context context = mapView.getContext();
+
+        if (mapView.getZoomLevel() < 16) {
+            return;
+        }
+
+        BoundingBox bbox = mapView.getBoundingBox();
+        updateBoundingBox(context, bbox);
+    }
+
+    public void updateBoundingBox(Context context, BoundingBox boundingBox) {
+        if(placeListUpdater == null) {
+            initPlaceListUpdater(context);
+        }
+
+        placeListUpdater.updateBoundingBox(boundingBox);
+        placeList = placeListUpdater.getPlaceList();
+    }
+
+    private void initPlaceListUpdater(Context context) {
+        adapter = new PlaceListAdapter(
+                context,
+                R.layout.placelist_item_row,
+                placeList
+        );
+
+        placeListUpdater = new PlaceListUpdater(adapter, placeList);
     }
 
 }
