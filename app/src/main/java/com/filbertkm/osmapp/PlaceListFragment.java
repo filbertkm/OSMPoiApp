@@ -1,12 +1,14 @@
 package com.filbertkm.osmapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -53,6 +55,17 @@ public class PlaceListFragment extends Fragment
 
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), PlaceDetails.class);
+                intent.putExtra("name", placeList.get(position).getName());
+                startActivity(intent);
+            }
+
+        });
+
         return view;
     }
 
@@ -87,7 +100,6 @@ public class PlaceListFragment extends Fragment
 
         placeListUpdater.updateBoundingBox(boundingBox);
         placeList = placeListUpdater.getPlaceList();
-        Log.i("osmapp", "updated from bbox");
     }
 
     private void initPlaceListUpdater(Context context) {

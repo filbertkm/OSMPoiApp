@@ -27,6 +27,10 @@
             android:name=".MainActivity"
             android:label="MainActivity" >
         </activity>
+        <activity
+            android:name=".PlaceDetails"
+            android:label="@string/title_activity_place_details" >
+        </activity>
     </application>
 
 </manifest>
