@@ -1,6 +1,7 @@
 package com.filbertkm.osmapp;
 
 
+import java.util.Comparator;
 import java.util.Map;
 
 public class Place {
@@ -44,5 +45,16 @@ public class Place {
     public Map getTags() {
         return this.tags;
     }
+
+    public static Comparator PlaceComparator = new Comparator<Place>() {
+
+        public int compare(Place node1, Place node2) {
+            String node1Id = node1.getName();
+            String node2Id = node2.getName();
+
+            return node1Id.compareTo(node2Id);
+        }
+
+    };
 
 }

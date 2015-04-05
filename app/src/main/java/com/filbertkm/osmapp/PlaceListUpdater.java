@@ -8,6 +8,7 @@ import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class PlaceListUpdater {
 
     public void updateBoundingBox(BoundingBox boundingBox) {
         final BoundingBox bbox = boundingBox;
+        final ArrayList<Place> newPlaceList = new ArrayList<>();
 
         new Thread() {
             public void run() {
@@ -48,40 +50,15 @@ public class PlaceListUpdater {
                 }
 
                 for (OSMNode node : nodes) {
-                    Map tags = node.getTags();
+                    Place newPlace = getPlaceForNode(node);
 
-                    if (tags != null) {
-                        if (tags.containsKey("name")) {
-                            Place place = new Place();
-                            Iterator entries = tags.entrySet().iterator();
-
-                            while (entries.hasNext()) {
-                                Map.Entry thisEntry = (Map.Entry) entries.next();
-
-                                String tagName = thisEntry.getKey().toString();
-                                String tagValue = thisEntry.getValue().toString().replace("_", " ");
-
-                                switch(tagName) {
-                                    case "name":
-                                        place.setName(tagValue);
-                                        break;
-                                    case "amenity":
-                                        place.setType(tagValue);
-                                        break;
-                                    case "shop":
-                                        place.setType(tagValue);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            place.setTags(tags);
-
-                            placeList.add(place);
-                        }
+                    if (newPlace != null) {
+                        newPlaceList.add(newPlace);
                     }
                 }
+
+                Collections.sort(newPlaceList, Place.PlaceComparator);
+                placeList.addAll(newPlaceList);
 
                 handler.post(new Runnable() {
                     public void run() {
@@ -90,9 +67,48 @@ public class PlaceListUpdater {
                 });
             }
         }.start();
+
+    }
+
+    private Place getPlaceForNode(OSMNode node) {
+        Map tags = node.getTags();
+
+        if (tags != null) {
+            if (tags.containsKey("name")) {
+                Place place = new Place();
+                Iterator entries = tags.entrySet().iterator();
+
+                while (entries.hasNext()) {
+                    Map.Entry thisEntry = (Map.Entry) entries.next();
+
+                    String tagName = thisEntry.getKey().toString();
+                    String tagValue = thisEntry.getValue().toString().replace("_", " ");
+
+                    switch (tagName) {
+                        case "name":
+                            place.setName(tagValue);
+                            break;
+                        case "amenity":
+                            place.setType(tagValue);
+                            break;
+                        case "shop":
+                            place.setType(tagValue);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                place.setTags(tags);
+
+                return place;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<Place> getPlaceList() {
-        return this.placeList;
+        return placeList;
     }
 }

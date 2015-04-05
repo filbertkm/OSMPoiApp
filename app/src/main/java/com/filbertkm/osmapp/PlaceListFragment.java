@@ -3,6 +3,7 @@ package com.filbertkm.osmapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class PlaceListFragment extends Fragment
 
         placeListUpdater.updateBoundingBox(boundingBox);
         placeList = placeListUpdater.getPlaceList();
+        Log.i("osmapp", "updated from bbox");
     }
 
     private void initPlaceListUpdater(Context context) {
