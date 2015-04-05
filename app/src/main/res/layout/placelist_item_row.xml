@@ -14,7 +14,8 @@
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         style="?android:textAppearanceMedium"
-        tools:text="Sample title" />
+        tools:text="Sample title"
+        android:textColor="#ff505050" />
 
     <TextView
         android:id="@+id/place_type"
@@ -23,6 +24,7 @@
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         style="?android:textAppearanceSmall"
-        tools:text="Sample type" />
+        tools:text="Sample type"
+        android:textColor="#ff646464" />
 
 </LinearLayout>

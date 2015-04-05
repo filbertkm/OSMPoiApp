@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OSMApp</string>
+    <string name="app_name">OSMPoiApp</string>
 
     <string name="title_section1">Map</string>
     <string name="title_section2">Nearby Places</string>
