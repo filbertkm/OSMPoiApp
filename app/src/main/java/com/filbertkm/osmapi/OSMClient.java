@@ -22,10 +22,6 @@ public class OSMClient {
 
     static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
-    public String getCapabilities() {
-        return doRequest("/capabilities");
-    }
-
     public String getMapData(BoundingBox boundingBox) {
         String apiPath = "/map?bbox="
             + boundingBox.getLonWest() + ","

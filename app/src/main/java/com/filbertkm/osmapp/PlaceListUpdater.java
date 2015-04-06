@@ -43,8 +43,6 @@ public class PlaceListUpdater {
                 OSMClient osmClient = new OSMClient();
                 final List<OSMNode> nodes = osmClient.fetchNodesFromBoundingBox(bbox);
 
-                placeList.clear();
-
                 if(nodes == null) {
                     return;
                 }
@@ -58,7 +56,12 @@ public class PlaceListUpdater {
                 }
 
                 Collections.sort(newPlaceList, Place.PlaceComparator);
+
+                placeList.clear();
                 placeList.addAll(newPlaceList);
+                placeList.trimToSize();
+
+                newPlaceList.clear();
 
                 handler.post(new Runnable() {
                     public void run() {

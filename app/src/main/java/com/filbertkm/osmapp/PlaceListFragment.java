@@ -85,7 +85,7 @@ public class PlaceListFragment extends Fragment
     private void updatePlaceListFromMapView(MapView mapView) {
         Context context = mapView.getContext();
 
-        if (mapView.getZoomLevel() < 16) {
+        if (mapView.getZoomLevel() < 17) {
             return;
         }
 
