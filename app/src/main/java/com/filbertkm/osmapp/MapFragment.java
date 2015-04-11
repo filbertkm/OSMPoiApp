@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
@@ -52,6 +53,15 @@ public class MapFragment extends Fragment {
         mapView = (MapView) v.findViewById(R.id.mapview);
 
         initializeMap();
+
+        ImageButton button = (ImageButton)v.findViewById(R.id.myLocationButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mapView.goToUserLocation(true);
+            }
+        });
 
         return v;
     }
