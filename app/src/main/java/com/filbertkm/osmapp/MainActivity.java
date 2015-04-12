@@ -16,9 +16,6 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity
         implements MainFragment.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private MainFragment mMainFragment;
 
     private List<Fragment> fragments;
@@ -37,7 +34,6 @@ public class MainActivity extends ActionBarActivity
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
-        // Set up the drawer.
         mMainFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -67,24 +63,12 @@ public class MainActivity extends ActionBarActivity
             .commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-        }
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
