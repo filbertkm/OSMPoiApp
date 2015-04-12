@@ -22,7 +22,11 @@ public class PlaceDetails extends ActionBarActivity {
             Bundle extras = getIntent().getExtras();
 
             PlaceDetailsFragment fragment = new PlaceDetailsFragment();
+
             fragment.setName(extras.getString("name"));
+            fragment.setPlaceType(extras.getString("type"));
+            fragment.setTagKeys(extras.getString("tagKeys"));
+            fragment.setTagValues(extras.getString("tagValues"));
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)

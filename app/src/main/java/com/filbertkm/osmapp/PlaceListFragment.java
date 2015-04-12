@@ -20,6 +20,8 @@ import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class PlaceListFragment extends Fragment
@@ -60,7 +62,22 @@ public class PlaceListFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PlaceDetails.class);
+
+                StringBuilder keyStringBuilder = new StringBuilder();
+                StringBuilder valueStringBuilder = new StringBuilder();
+
+                Iterator iterator = placeList.get(position).getTags().entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry tag = (Map.Entry) iterator.next();
+                    keyStringBuilder.append(tag.getKey().toString() + "\n");
+                    valueStringBuilder.append(tag.getValue().toString() + "\n");
+                }
+
                 intent.putExtra("name", placeList.get(position).getName());
+                intent.putExtra("type", placeList.get(position).getType());
+                intent.putExtra("tagKeys", keyStringBuilder.toString());
+                intent.putExtra("tagValues", valueStringBuilder.toString());
+
                 startActivity(intent);
             }
 
