@@ -58,9 +58,12 @@ public class MainActivity extends ActionBarActivity
             createFragments();
         }
 
+        Fragment fragment = fragments.get(position);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-            .replace(R.id.container, fragments.get(position))
+            .replace(R.id.container, fragment)
+            .addToBackStack(fragment.getClass().getSimpleName())
             .commit();
     }
 
@@ -109,6 +112,17 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if(fragmentManager.getBackStackEntryCount() > 1) {
+            fragmentManager.popBackStack();
+        } else {
+            finish();
+        }
+
     }
 
 }
