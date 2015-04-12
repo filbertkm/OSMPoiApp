@@ -14,12 +14,12 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements MainFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private MainFragment mMainFragment;
 
     private List<Fragment> fragments;
 
@@ -33,12 +33,12 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        mMainFragment = (MainFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+        mMainFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
@@ -88,7 +88,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        if (!mMainFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
