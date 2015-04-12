@@ -19,7 +19,11 @@ public class MapFragment extends Fragment {
 
     private MapListener mapListener;
 
+    private View rootView;
+
     private MapView mapView;
+
+    private ImageButton myLocationButton;
 
     private float zoom = 18;
 
@@ -49,21 +53,18 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
-        mapView = (MapView) v.findViewById(R.id.mapview);
+        if(rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        }
+
+        mapView = (MapView) rootView.findViewById(R.id.mapview);
 
         initializeMap();
 
-        ImageButton button = (ImageButton)v.findViewById(R.id.myLocationButton);
+        myLocationButton = (ImageButton) rootView.findViewById(R.id.myLocationButton);
+        setLocationButtonListener();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mapView.goToUserLocation(true);
-            }
-        });
-
-        return v;
+        return rootView;
     }
 
     private void initializeMap() {
@@ -101,9 +102,15 @@ public class MapFragment extends Fragment {
         savedInstanceState.putParcelable("center", mapView.getCenter());
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    private void setLocationButtonListener() {
+        if (myLocationButton != null) {
+            myLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mapView.goToUserLocation(true);
+                }
+            });
+        }
     }
 
     @Override
