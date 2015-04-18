@@ -1,8 +1,8 @@
 package com.filbertkm.osmapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
 
@@ -73,11 +74,13 @@ public class MapFragment extends Fragment {
             "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         );
 
+        mapView.setDiskCacheEnabled(true);
         mapView.setTileSource(tileSource);
         mapView.setZoom(zoom);
 
         if (center == null) {
             mapView.setUserLocationEnabled(true);
+            mapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.FOLLOW);
             mapView.goToUserLocation(true);
         } else {
             mapView.setCenter(center);
@@ -107,6 +110,8 @@ public class MapFragment extends Fragment {
             myLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mapView.setUserLocationEnabled(true);
+                    mapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.FOLLOW);
                     mapView.goToUserLocation(true);
                 }
             });

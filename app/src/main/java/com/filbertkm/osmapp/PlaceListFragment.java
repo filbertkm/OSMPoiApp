@@ -3,6 +3,7 @@ package com.filbertkm.osmapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.mapbox.mapboxsdk.events.ZoomEvent;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.views.MapView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -120,13 +122,23 @@ public class PlaceListFragment extends Fragment
     }
 
     private void initPlaceListUpdater(Context context) {
+        File cacheDir = context.getCacheDir();
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            cacheDir = context.getExternalCacheDir();
+        }
+
         adapter = new PlaceListAdapter(
                 context,
                 R.layout.placelist_item_row,
                 placeList
         );
 
-        placeListUpdater = new PlaceListUpdater(adapter, placeList);
+        placeListUpdater = new PlaceListUpdater(
+            adapter,
+            placeList,
+            cacheDir
+        );
     }
 
 }

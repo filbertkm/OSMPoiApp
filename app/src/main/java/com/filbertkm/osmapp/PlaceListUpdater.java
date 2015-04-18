@@ -7,6 +7,7 @@ import com.filbertkm.osmapi.OSMClient;
 import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -22,9 +23,13 @@ public class PlaceListUpdater {
 
     private Handler handler;
 
-    public PlaceListUpdater(ArrayAdapter adapter, ArrayList<Place> placeList) {
+    private File cacheDir;
+
+    public PlaceListUpdater(ArrayAdapter adapter, ArrayList<Place> placeList, File cacheDir) {
         this.adapter = adapter;
         this.placeList = placeList;
+        this.cacheDir = cacheDir;
+
         this.handler = new Handler();
     }
 
@@ -40,7 +45,7 @@ public class PlaceListUpdater {
                     }
                 });
 
-                OSMClient osmClient = new OSMClient();
+                OSMClient osmClient = new OSMClient(cacheDir);
                 final List<OSMNode> nodes = osmClient.fetchNodesFromBoundingBox(bbox);
 
                 if(nodes == null) {
