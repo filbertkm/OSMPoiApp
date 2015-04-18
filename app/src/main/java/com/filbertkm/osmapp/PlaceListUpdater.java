@@ -45,8 +45,8 @@ public class PlaceListUpdater {
                     }
                 });
 
-                OSMClient osmClient = new OSMClient(cacheDir);
-                final List<OSMNode> nodes = osmClient.fetchNodesFromBoundingBox(bbox);
+                OSMMapDataLoader osmMapDataLoader = new OSMMapDataLoader(cacheDir);
+                final List<OSMNode> nodes = osmMapDataLoader.fetchNodesFromBoundingBox(bbox);
 
                 if(nodes == null) {
                     return;
