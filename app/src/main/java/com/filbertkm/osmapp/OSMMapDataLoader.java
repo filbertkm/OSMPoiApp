@@ -23,7 +23,7 @@ public class OSMMapDataLoader {
 
     private static final int VALUE_COUNT = 1;
 
-    private static final long DISK_CACHE_SIZE = 1024 * 1024 * 32;
+    private static final long DISK_CACHE_SIZE = 1024 * 1024 * 64;
 
     private File cacheDir;
 
@@ -61,7 +61,9 @@ public class OSMMapDataLoader {
 
                     Log.i("osmapp", "obtained tile from cache: " + tile);
 
-                    return mapData;
+                    if( mapData != null ) {
+                        return mapData;
+                    }
                 } catch (ClassNotFoundException ex) {
                     // omg
                 } catch (IOException ex) {
@@ -71,6 +73,12 @@ public class OSMMapDataLoader {
 
             BoundingBox boundingBox = mapTileCalculator.tile2BoundingBox(tile);
             mapData = osmClient.getMapData(boundingBox);
+
+            if (mapData == null) {
+                return null;
+            }
+
+            Log.i("osmapp", "fetched map data");
 
             try {
                 DiskLruCache.Editor editor = diskLruCache.edit(cacheKey);
@@ -100,7 +108,15 @@ public class OSMMapDataLoader {
 
         for (String tile : tiles) {
             String mapData = this.getMapData(tile);
+
+            if (mapData == null) {
+                Log.i("osmapp", "failed to fetch data");
+                return null;
+            }
+
             List<OSMNode> nodeList = parser.parse(mapData);
+
+            Log.i("osmapp", "parsing map data");
 
             for(OSMNode node : nodeList) {
                 bboxNodeList.put(Long.parseLong(node.getId()), node);

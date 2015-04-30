@@ -27,6 +27,8 @@ public class OSMClient {
 
     private String baseUri = "http://api.openstreetmap.org/api/0.6";
 
+    private int retries = 0;
+
     static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     public String getMapData(BoundingBox boundingBox) {
@@ -36,6 +38,11 @@ public class OSMClient {
                 + boundingBox.getLatNorth();
 
         String apiPath = "/map?bbox=" + bboxName;
+        return doRequest(apiPath);
+    }
+
+    private String doOriginalRequest(String apiPath) {
+        retries = 0;
         return doRequest(apiPath);
     }
 
@@ -50,12 +57,20 @@ public class OSMClient {
             if (response.isSuccessStatusCode()) {
                 return response.parseAsString();
             } else {
+                Log.i("osmapp", "response not successful");
                 return null;
             }
         } catch (IOException e) {
             // oops!
-            return null;
+            Log.i("osmapp", "ooops! request failed");
+            // try again
+            retries++;
+
+            if (retries < 3) {
+                return doRequest(apiPath);
+            } else {
+                return null;
+            }
         }
     }
-
 }
