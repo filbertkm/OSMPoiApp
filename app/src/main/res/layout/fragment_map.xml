@@ -11,13 +11,16 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:elevation="16dp"
         android:id="@+id/myLocationButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="right|bottom"
-        android:background="@drawable/mylocation"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:background="@drawable/circle"
+        android:text="x"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <requestFocus android:layout_gravity="right|center_vertical" />
 

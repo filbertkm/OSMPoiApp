@@ -9,4 +9,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_place_details">PlaceDetails</string>
+
+    <string name="location_button_text">&#xf124;</string>
 </resources>

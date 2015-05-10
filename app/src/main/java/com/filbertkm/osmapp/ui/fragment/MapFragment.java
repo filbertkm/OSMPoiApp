@@ -1,11 +1,12 @@
 package com.filbertkm.osmapp.ui.fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import com.filbertkm.osmapp.R;
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
@@ -24,11 +25,13 @@ public class MapFragment extends Fragment {
 
     private MapView mapView;
 
-    private ImageButton myLocationButton;
+    private Button myLocationButton;
 
     private float zoom = 18;
 
     private LatLng center;
+
+    private Typeface fontAwesome;
 
     public static MapFragment newInstance(MapListener mapListener) {
         MapFragment fragment = new MapFragment();
@@ -44,6 +47,8 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontawesome-webfont.ttf");
 
         if (savedInstanceState != null) {
             zoom = savedInstanceState.getFloat("zoom");
@@ -62,7 +67,10 @@ public class MapFragment extends Fragment {
 
         initializeMap();
 
-        myLocationButton = (ImageButton) rootView.findViewById(R.id.myLocationButton);
+        myLocationButton = (Button) rootView.findViewById(R.id.myLocationButton);
+        myLocationButton.setText(getActivity().getString(R.string.location_button_text));
+        myLocationButton.setTypeface(fontAwesome);
+
         setLocationButtonListener();
 
         return rootView;
