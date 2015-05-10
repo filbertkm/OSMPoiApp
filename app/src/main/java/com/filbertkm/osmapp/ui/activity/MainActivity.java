@@ -1,4 +1,4 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.fragment.MainFragment;
+import com.filbertkm.osmapp.ui.fragment.MapFragment;
+import com.filbertkm.osmapp.ui.fragment.PlaceListFragment;
 
 import java.util.ArrayList;
 import java.util.List;

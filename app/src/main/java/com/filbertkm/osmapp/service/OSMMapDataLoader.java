@@ -1,4 +1,4 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.service;
 
 import android.util.Log;
 

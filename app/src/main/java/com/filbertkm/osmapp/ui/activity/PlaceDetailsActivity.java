@@ -1,18 +1,15 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.ui.activity;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+
+import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.fragment.PlaceDetailsFragment;
 
 
-public class PlaceDetails extends ActionBarActivity {
+public class PlaceDetailsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

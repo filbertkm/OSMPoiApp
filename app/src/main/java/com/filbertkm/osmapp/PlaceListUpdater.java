@@ -3,7 +3,8 @@ package com.filbertkm.osmapp;
 import android.os.Handler;
 import android.widget.ArrayAdapter;
 
-import com.filbertkm.osmapi.OSMClient;
+import com.filbertkm.osmapp.model.Place;
+import com.filbertkm.osmapp.service.OSMMapDataLoader;
 import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 

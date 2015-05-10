@@ -1,13 +1,13 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.filbertkm.osmapp.R;
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.geometry.LatLng;

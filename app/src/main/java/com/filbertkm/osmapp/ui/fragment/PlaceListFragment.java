@@ -1,4 +1,4 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.filbertkm.osmapp.model.Place;
+import com.filbertkm.osmapp.ui.activity.PlaceDetailsActivity;
+import com.filbertkm.osmapp.PlaceListUpdater;
+import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.adapter.PlaceListAdapter;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.events.RotateEvent;
 import com.mapbox.mapboxsdk.events.ScrollEvent;
@@ -62,7 +67,7 @@ public class PlaceListFragment extends Fragment
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), PlaceDetails.class);
+                Intent intent = new Intent(getActivity(), PlaceDetailsActivity.class);
 
                 StringBuilder keyStringBuilder = new StringBuilder();
                 StringBuilder valueStringBuilder = new StringBuilder();

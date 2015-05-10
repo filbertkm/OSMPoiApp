@@ -1,4 +1,4 @@
-package com.filbertkm.osmapp;
+package com.filbertkm.osmapp.model;
 
 
 import java.util.Comparator;
