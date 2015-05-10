@@ -14,8 +14,8 @@
     <Button
         android:elevation="16dp"
         android:id="@+id/myLocationButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="right|bottom"
         android:layout_margin="10dp"
         android:background="@drawable/circle"
