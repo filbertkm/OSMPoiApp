@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.filbertkm.osmapp.R;
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
@@ -27,11 +28,11 @@ public class MapFragment extends Fragment {
 
     private Button myLocationButton;
 
+    private ImageButton locationButton;
+
     private float zoom = 18;
 
     private LatLng center;
-
-    private Typeface fontAwesome;
 
     public static MapFragment newInstance(MapListener mapListener) {
         MapFragment fragment = new MapFragment();
@@ -47,8 +48,6 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontawesome-webfont.ttf");
 
         if (savedInstanceState != null) {
             zoom = savedInstanceState.getFloat("zoom");
@@ -67,9 +66,7 @@ public class MapFragment extends Fragment {
 
         initializeMap();
 
-        myLocationButton = (Button) rootView.findViewById(R.id.myLocationButton);
-        myLocationButton.setText(getActivity().getString(R.string.location_button_text));
-        myLocationButton.setTypeface(fontAwesome);
+        locationButton = (ImageButton) rootView.findViewById(R.id.location_button);
 
         setLocationButtonListener();
 
@@ -114,8 +111,8 @@ public class MapFragment extends Fragment {
     }
 
     private void setLocationButtonListener() {
-        if (myLocationButton != null) {
-            myLocationButton.setOnClickListener(new View.OnClickListener() {
+        if (locationButton != null) {
+            locationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mapView.setUserLocationEnabled(true);

@@ -11,17 +11,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <Button
-        android:elevation="16dp"
-        android:id="@+id/myLocationButton"
+    <requestFocus android:layout_gravity="right|center_vertical" />
+
+    <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:id="@+id/location_button"
         android:layout_gravity="right|bottom"
-        android:layout_margin="10dp"
-        android:background="@drawable/circle"
-        android:text="x"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <requestFocus android:layout_gravity="right|center_vertical" />
+        android:src="@drawable/ic_gps_fixed_black_24dp" />
 
 </FrameLayout>
