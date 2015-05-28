@@ -7,6 +7,7 @@ import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.service.OSMMapDataLoader;
 import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,6 +86,14 @@ public class PlaceListUpdater {
         if (tags != null) {
             if (tags.containsKey("name")) {
                 Place place = new Place();
+
+                place.setLocation(
+                    new LatLng(
+                        Double.parseDouble(node.getLat()),
+                        Double.parseDouble(node.getLon())
+                    )
+                );
+
                 Iterator entries = tags.entrySet().iterator();
 
                 while (entries.hasNext()) {

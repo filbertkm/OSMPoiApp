@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.mapbox.mapboxsdk.events.RotateEvent;
 import com.mapbox.mapboxsdk.events.ScrollEvent;
 import com.mapbox.mapboxsdk.events.ZoomEvent;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.overlay.Icon;
+import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import java.io.File;
@@ -112,17 +115,27 @@ public class PlaceListFragment extends Fragment
             return;
         }
 
-        BoundingBox bbox = mapView.getBoundingBox();
-        updateBoundingBox(context, bbox);
+        updatePlaces(context, mapView);
     }
 
-    public void updateBoundingBox(Context context, BoundingBox boundingBox) {
+    public void updatePlaces(Context context, MapView mapView) {
         if(placeListUpdater == null) {
             initPlaceListUpdater(context);
         }
 
+        BoundingBox boundingBox = mapView.getBoundingBox();
+
         placeListUpdater.updateBoundingBox(boundingBox);
         placeList = placeListUpdater.getPlaceList();
+
+        for (Iterator<Place> it = placeList.iterator(); it.hasNext(); ) {
+            Place place = it.next();
+            Marker m = new Marker(mapView, place.getName(), place.getType(), place.getLocation());
+            m.setIcon(new Icon(ContextCompat.getDrawable(context, R.drawable.ic_place_black)));
+            mapView.addMarker(m);
+        }
+
+        mapView.invalidate();
     }
 
     private void initPlaceListUpdater(Context context) {

@@ -1,6 +1,8 @@
 package com.filbertkm.osmapp.model;
 
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import java.util.Comparator;
 import java.util.Map;
 
@@ -11,6 +13,8 @@ public class Place {
     private String type = "other";
 
     private String name;
+
+    private LatLng location;
 
     private Map tags;
 
@@ -37,6 +41,12 @@ public class Place {
     public String getName() {
         return this.name;
     }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
+    }
+
+    public LatLng getLocation() { return this.location; }
 
     public void setTags(Map tags) {
         this.tags = tags;
