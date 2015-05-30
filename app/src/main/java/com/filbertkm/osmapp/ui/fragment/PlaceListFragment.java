@@ -2,6 +2,7 @@ package com.filbertkm.osmapp.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -130,9 +131,12 @@ public class PlaceListFragment extends Fragment
 
         for (Iterator<Place> it = placeList.iterator(); it.hasNext(); ) {
             Place place = it.next();
-            Marker m = new Marker(mapView, place.getName(), place.getType(), place.getLocation());
-            m.setIcon(new Icon(ContextCompat.getDrawable(context, R.drawable.ic_place_black)));
-            mapView.addMarker(m);
+
+            Marker marker = new Marker(mapView, place.getName(), place.getType(), place.getLocation());
+            Drawable iconImage = ContextCompat.getDrawable(context, R.drawable.ic_map_marker);
+            marker.setIcon(new Icon(iconImage));
+
+            mapView.addMarker(marker);
         }
 
         mapView.invalidate();
