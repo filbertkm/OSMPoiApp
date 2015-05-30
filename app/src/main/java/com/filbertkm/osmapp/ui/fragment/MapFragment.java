@@ -26,8 +26,6 @@ public class MapFragment extends Fragment {
 
     private MapView mapView;
 
-    private Button myLocationButton;
-
     private ImageButton locationButton;
 
     private float zoom = 18;

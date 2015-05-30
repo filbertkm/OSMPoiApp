@@ -50,7 +50,7 @@ public class PlaceListUpdater {
                 OSMMapDataLoader osmMapDataLoader = new OSMMapDataLoader(cacheDir);
                 final List<OSMNode> nodes = osmMapDataLoader.fetchNodesFromBoundingBox(bbox);
 
-                if(nodes == null) {
+                if (nodes == null) {
                     return;
                 }
 
