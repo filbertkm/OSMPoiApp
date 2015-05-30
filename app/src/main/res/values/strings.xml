@@ -5,9 +5,11 @@
     <string name="acra_report_dialog_text">Send us a crash report</string>
     <string name="acra_report_dialog_comment">What were you doing when the crash happened?</string>
 
+    <string name="action_edit">Edit</string>
     <string name="action_list">List</string>
     <string name="action_map">Map</string>
     <string name="action_settings">Settings</string>
+    <string name="action_view">View</string>
 
     <string name="location_button_text">&#xf124;</string>
 

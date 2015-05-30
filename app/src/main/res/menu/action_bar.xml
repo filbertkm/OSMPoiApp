@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.filbertkm.osmapp.ui.activity.MainActivity">
 
+    <item android:id="@+id/action_edit"
+        android:title="@string/action_edit"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_toggle"
         android:title="@string/action_list"
         android:orderInCategory="100"

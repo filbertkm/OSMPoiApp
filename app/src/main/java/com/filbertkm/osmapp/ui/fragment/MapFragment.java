@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.filbertkm.osmapp.PlaceListUpdater;
 import com.filbertkm.osmapp.R;
 import com.mapbox.mapboxsdk.events.DelayedMapListener;
 import com.mapbox.mapboxsdk.events.MapListener;
@@ -37,6 +38,10 @@ public class MapFragment extends Fragment {
         fragment.setMapListener(new DelayedMapListener(mapListener));
 
         return fragment;
+    }
+
+    public static MapFragment newInstance() {
+        return new MapFragment();
     }
 
     public void setMapListener(MapListener mapListener) {
@@ -89,7 +94,9 @@ public class MapFragment extends Fragment {
             mapView.setCenter(center);
         }
 
-        mapView.addListener(mapListener);
+        if (mapListener != null) {
+            mapView.addListener(mapListener);
+        }
     }
 
     @Override

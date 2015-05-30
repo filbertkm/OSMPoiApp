@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,11 +20,11 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    private List<Fragment> fragments;
-
     private CharSequence mTitle;
 
     private int toggleFragment = 1;
+
+    private boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +33,10 @@ public class MainActivity extends ActionBarActivity {
 
         mTitle = getTitle();
 
-        launchFragment(0);
+        launchFragment(MapFragment.newInstance());
     }
 
-    private void createFragments() {
-        fragments = new ArrayList();
-
-        PlaceListFragment placeListFragment = PlaceListFragment.newInstance();
-
-        fragments.add(MapFragment.newInstance(placeListFragment));
-        fragments.add(placeListFragment);
-    }
-
-    private void launchFragment(int position) {
-        if(fragments == null) {
-            createFragments();
-        }
-
-        Fragment fragment = fragments.get(position);
-
+    private void launchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
@@ -68,23 +54,47 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.main_nav_drawer, menu);
+        inflater.inflate(R.menu.action_bar, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem toggleItem = menu.findItem(R.id.action_toggle);
+        MenuItem editItem = menu.findItem(R.id.action_edit);
+;
+        if(editMode) {
+            toggleItem.setVisible(true);
+            editItem.setTitle(R.string.action_view);
+        } else {
+            toggleItem.setVisible(false);
+            editItem.setTitle(R.string.action_edit);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_edit:
+                editMode = !editMode;
+                invalidateOptionsMenu();
+                return true;
             case R.id.action_toggle:
-                this.launchFragment(toggleFragment);
-
                 if(toggleFragment == 1) {
                     toggleFragment = 0;
                     item.setTitle(R.string.action_map);
+                    launchFragment(PlaceListFragment.newInstance());
                 } else {
                     toggleFragment = 1;
                     item.setTitle(R.string.action_list);
+                    launchFragment(
+                        MapFragment.newInstance(PlaceListFragment.newInstance())
+                    );
                 }
 
                 return true;
@@ -104,6 +114,10 @@ public class MainActivity extends ActionBarActivity {
             finish();
         }
 
+    }
+
+    public boolean isEditMode() {
+        return editMode;
     }
 
 }
