@@ -1,12 +1,8 @@
 package com.filbertkm.osmapp.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +14,12 @@ import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.ui.activity.PlaceDetailsActivity;
 import com.filbertkm.osmapp.PlaceListUpdater;
 import com.filbertkm.osmapp.R;
-import com.filbertkm.osmapp.ui.adapter.PlaceListAdapter;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.events.RotateEvent;
 import com.mapbox.mapboxsdk.events.ScrollEvent;
 import com.mapbox.mapboxsdk.events.ZoomEvent;
-import com.mapbox.mapboxsdk.geometry.BoundingBox;
-import com.mapbox.mapboxsdk.overlay.Icon;
-import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.views.MapView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,13 +36,13 @@ public class PlaceListFragment extends Fragment
 
     PlaceListUpdater placeListUpdater;
 
-    /**
-     * @return A new instance of fragment PlaceListFragment.
-     */
     public static PlaceListFragment newInstance() {
-        PlaceListFragment fragment = new PlaceListFragment();
+        return new PlaceListFragment() ;
+    }
 
-        return fragment;
+    public void setPlaceListUpdater(PlaceListUpdater placeListUpdater) {
+        this.placeListUpdater = placeListUpdater;
+        adapter = this.placeListUpdater.getAdapter();
     }
 
     @Override
@@ -61,11 +52,7 @@ public class PlaceListFragment extends Fragment
 
         listView = (ListView) view.findViewById(R.id.placelist_field);
 
-        if (placeListUpdater == null) {
-            initPlaceListUpdater(getActivity());
-        }
-
-        listView.setAdapter(adapter);
+        listView.setAdapter(placeListUpdater.getAdapter());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -109,57 +96,12 @@ public class PlaceListFragment extends Fragment
 
     }
 
-    private void updatePlaceListFromMapView(MapView mapView) {
-        Context context = mapView.getContext();
-
+    public void updatePlaceListFromMapView(MapView mapView) {
         if (mapView.getZoomLevel() < 17) {
             return;
         }
 
-        updatePlaces(context, mapView);
-    }
-
-    public void updatePlaces(Context context, MapView mapView) {
-        if(placeListUpdater == null) {
-            initPlaceListUpdater(context);
-        }
-
-        BoundingBox boundingBox = mapView.getBoundingBox();
-
-        placeListUpdater.updateBoundingBox(boundingBox);
-        placeList = placeListUpdater.getPlaceList();
-
-        for (Iterator<Place> it = placeList.iterator(); it.hasNext(); ) {
-            Place place = it.next();
-
-            Marker marker = new Marker(mapView, place.getName(), place.getType(), place.getLocation());
-            Drawable iconImage = ContextCompat.getDrawable(context, R.drawable.ic_map_marker);
-            marker.setIcon(new Icon(iconImage));
-
-            mapView.addMarker(marker);
-        }
-
-        mapView.invalidate();
-    }
-
-    private void initPlaceListUpdater(Context context) {
-        File cacheDir = context.getCacheDir();
-
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheDir = context.getExternalCacheDir();
-        }
-
-        adapter = new PlaceListAdapter(
-                context,
-                R.layout.placelist_item_row,
-                placeList
-        );
-
-        placeListUpdater = new PlaceListUpdater(
-            adapter,
-            placeList,
-            cacheDir
-        );
+        placeListUpdater.updateBoundingBox(mapView);
     }
 
 }

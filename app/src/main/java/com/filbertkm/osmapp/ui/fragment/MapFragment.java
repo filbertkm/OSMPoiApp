@@ -1,22 +1,22 @@
 package com.filbertkm.osmapp.ui.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.filbertkm.osmapp.PlaceListUpdater;
 import com.filbertkm.osmapp.R;
-import com.mapbox.mapboxsdk.events.DelayedMapListener;
+import com.filbertkm.osmapp.model.Place;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
+
+import java.util.ArrayList;
 
 
 public class MapFragment extends Fragment {
@@ -32,17 +32,6 @@ public class MapFragment extends Fragment {
     private float zoom = 18;
 
     private LatLng center;
-
-    public static MapFragment newInstance(MapListener mapListener) {
-        MapFragment fragment = new MapFragment();
-        fragment.setMapListener(new DelayedMapListener(mapListener));
-
-        return fragment;
-    }
-
-    public static MapFragment newInstance() {
-        return new MapFragment();
-    }
 
     public void setMapListener(MapListener mapListener) {
         this.mapListener = mapListener;
@@ -61,7 +50,7 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(rootView == null) {
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_map, container, false);
         }
 
@@ -128,4 +117,13 @@ public class MapFragment extends Fragment {
         }
     }
 
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public interface MarkerAdapter {
+
+        void onMarkerUpdate(MapView mapView, ArrayList<Place> placeList);
+
+    }
 }
