@@ -4,17 +4,20 @@ import android.util.Log;
 
 import com.filbertkm.osmapi.MapTileCalculator;
 import com.filbertkm.osmapi.OSMClient;
+import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmxml.OSMNode;
 import com.filbertkm.osmxml.OSMXmlParser;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class OSMMapDataLoader {
@@ -31,10 +34,14 @@ public class OSMMapDataLoader {
 
     private OSMClient osmClient;
 
+    private OSMXmlParser parser;
+
     public OSMMapDataLoader(File cacheDir) {
         this.cacheDir = new File(cacheDir.getPath() + File.separator + "osmappdata");
+
         mapTileCalculator = new MapTileCalculator();
         osmClient = new OSMClient();
+        parser = new OSMXmlParser();
     }
 
     public String getMapData(String tile) {
@@ -100,30 +107,72 @@ public class OSMMapDataLoader {
         return mapData;
     }
 
-    public List<OSMNode> fetchNodesFromBoundingBox(BoundingBox boundingBox) {
-        OSMXmlParser parser = new OSMXmlParser();
-        ArrayList<String> tiles = mapTileCalculator.calculateTiles(boundingBox);
+    public TreeMap<Long,Place> getPlacesForTile(String tile) {
+        String mapData = this.getMapData(tile);
 
-        TreeMap<Long,OSMNode> bboxNodeList = new TreeMap<>();
+        if (mapData == null) {
+            Log.i("osmapp", "failed to fetch data");
+            return null;
+        }
 
-        for (String tile : tiles) {
-            String mapData = this.getMapData(tile);
+        List<OSMNode> nodes = parser.parse(mapData);
 
-            if (mapData == null) {
-                Log.i("osmapp", "failed to fetch data");
-                return null;
-            }
+        TreeMap<Long,Place> bboxNodeList = new TreeMap<>();
 
-            List<OSMNode> nodeList = parser.parse(mapData);
+        for(OSMNode node : nodes) {
+            Place place = getPlaceForNode(node);
+            bboxNodeList.put(Long.parseLong(node.getId()), place);
+        }
 
-            Log.i("osmapp", "parsing map data");
+        return bboxNodeList;
+    }
 
-            for(OSMNode node : nodeList) {
-                bboxNodeList.put(Long.parseLong(node.getId()), node);
+    private Place getPlaceForNode(OSMNode node) {
+        Map tags = node.getTags();
+
+        if (tags != null) {
+            if (tags.containsKey("name")) {
+                Place place = new Place();
+
+                place.setId(Long.parseLong(node.getId()));
+
+                place.setLocation(
+                        new LatLng(
+                                Double.parseDouble(node.getLat()),
+                                Double.parseDouble(node.getLon())
+                        )
+                );
+
+                Iterator entries = tags.entrySet().iterator();
+
+                while (entries.hasNext()) {
+                    Map.Entry thisEntry = (Map.Entry) entries.next();
+
+                    String tagName = thisEntry.getKey().toString();
+                    String tagValue = thisEntry.getValue().toString().replace("_", " ");
+
+                    switch (tagName) {
+                        case "name":
+                            place.setName(tagValue);
+                            break;
+                        case "amenity":
+                            place.setType(tagValue);
+                            break;
+                        case "shop":
+                            place.setType(tagValue);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                place.setTags(tags);
+
+                return place;
             }
         }
 
-        return new ArrayList<>(bboxNodeList.values());
+        return null;
     }
 
 }

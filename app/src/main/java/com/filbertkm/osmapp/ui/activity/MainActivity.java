@@ -17,8 +17,6 @@ import com.mapbox.mapboxsdk.views.MapView;
 
 public class MainActivity extends ActionBarActivity {
 
-    private CharSequence mTitle;
-
     private PlaceListUpdater placeListUpdater;
 
     private PlaceListFragment placeListFragment;
@@ -34,7 +32,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitle = getTitle();
         placeListUpdater = new PlaceListUpdater(this);
 
         launchFragment(new MapFragment(), "fragment_map");
@@ -59,19 +56,22 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        setEditMenuItem(menu);
 
+        return true;
+    }
+
+    private void setEditMenuItem(Menu menu) {
         MenuItem toggleItem = menu.findItem(R.id.action_toggle);
         MenuItem editItem = menu.findItem(R.id.action_edit);
-;
-        if(editMode) {
+
+        if (editMode) {
             toggleItem.setVisible(true);
             editItem.setTitle(R.string.action_view);
         } else {
             toggleItem.setVisible(false);
             editItem.setTitle(R.string.action_edit);
         }
-
-        return true;
     }
 
     @Override
@@ -88,14 +88,14 @@ public class MainActivity extends ActionBarActivity {
                     clearMarkers();
                     editMode = false;
                 } else {
-                    updatePlaces(placeListFragment);
+                    updatePlaces();
                     editMode = true;
                 }
 
                 invalidateOptionsMenu();
                 return true;
             case R.id.action_toggle:
-                updatePlaces(placeListFragment);
+                updatePlaces();
 
                 if(toggleFragment == 1) {
                     toggleFragment = 0;
@@ -115,20 +115,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void updatePlaces(PlaceListFragment placeListFragment) {
+    private void updatePlaces() {
         mapFragment = (MapFragment)
                 getSupportFragmentManager().findFragmentByTag("fragment_map");
 
         if (mapFragment != null) {
-            mapFragment.setMapListener(placeListFragment);
-
+            mapFragment.setMapListener(placeListUpdater);
             MapView mapView = mapFragment.getMapView();
 
             if (mapView != null) {
-                placeListUpdater.updateBoundingBox(mapView);
+                placeListUpdater.updateMapView(mapView);
             }
-
-            mapView.invalidate();
         }
     }
 
@@ -136,7 +133,14 @@ public class MainActivity extends ActionBarActivity {
         mapFragment = (MapFragment)
                 getSupportFragmentManager().findFragmentByTag("fragment_map");
 
-        mapFragment.getMapView().clear();
+        if (mapFragment != null) {
+            MapView mapView = mapFragment.getMapView();
+
+            if (mapView != null) {
+                mapFragment.getMapView().clear();
+                mapFragment.getMapView().removeListener(placeListUpdater);
+            }
+        }
     }
 
     public void onBackPressed() {

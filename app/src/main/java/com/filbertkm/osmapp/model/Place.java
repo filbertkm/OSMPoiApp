@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class Place {
 
+    private Long id;
+
     private String parentType;
 
     private String type = "other";
@@ -24,6 +26,14 @@ public class Place {
 
     public String getParentType() {
         return this.parentType;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setType(String type) {

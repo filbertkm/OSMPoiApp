@@ -14,10 +14,6 @@ import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.ui.activity.PlaceDetailsActivity;
 import com.filbertkm.osmapp.PlaceListUpdater;
 import com.filbertkm.osmapp.R;
-import com.mapbox.mapboxsdk.events.MapListener;
-import com.mapbox.mapboxsdk.events.RotateEvent;
-import com.mapbox.mapboxsdk.events.ScrollEvent;
-import com.mapbox.mapboxsdk.events.ZoomEvent;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import java.util.ArrayList;
@@ -25,8 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class PlaceListFragment extends Fragment
-    implements MapListener {
+public class PlaceListFragment extends Fragment {
 
     private ListView listView;
 
@@ -81,27 +76,6 @@ public class PlaceListFragment extends Fragment
         });
 
         return view;
-    }
-
-    public void onScroll(ScrollEvent event) {
-        // @fixme add getSource to MapEvent interface
-        updatePlaceListFromMapView(event.getSource());
-    }
-
-    public void onZoom(ZoomEvent event) {
-        updatePlaceListFromMapView(event.getSource());
-    }
-
-    public void onRotate(RotateEvent event) {
-
-    }
-
-    public void updatePlaceListFromMapView(MapView mapView) {
-        if (mapView.getZoomLevel() < 17) {
-            return;
-        }
-
-        placeListUpdater.updateBoundingBox(mapView);
     }
 
 }

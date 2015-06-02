@@ -35,6 +35,10 @@ public class MapFragment extends Fragment {
 
     public void setMapListener(MapListener mapListener) {
         this.mapListener = mapListener;
+
+        if (mapView != null) {
+            mapView.addListener(mapListener);
+        }
     }
 
     @Override
@@ -82,10 +86,6 @@ public class MapFragment extends Fragment {
         } else {
             mapView.setCenter(center);
         }
-
-        if (mapListener != null) {
-            mapView.addListener(mapListener);
-        }
     }
 
     @Override
@@ -121,9 +121,4 @@ public class MapFragment extends Fragment {
         return mapView;
     }
 
-    public interface MarkerAdapter {
-
-        void onMarkerUpdate(MapView mapView, ArrayList<Place> placeList);
-
-    }
 }
