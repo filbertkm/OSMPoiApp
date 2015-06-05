@@ -1,10 +1,10 @@
 package com.filbertkm.osmapp;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -12,16 +12,15 @@ import android.widget.ArrayAdapter;
 import com.filbertkm.osmapi.MapTileCalculator;
 import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.service.OSMMapDataLoader;
+import com.filbertkm.osmapp.ui.PlaceTooltip;
 import com.filbertkm.osmapp.ui.adapter.PlaceListAdapter;
-import com.filbertkm.osmxml.OSMNode;
 import com.mapbox.mapboxsdk.events.MapListener;
 import com.mapbox.mapboxsdk.events.RotateEvent;
 import com.mapbox.mapboxsdk.events.ScrollEvent;
 import com.mapbox.mapboxsdk.events.ZoomEvent;
-import com.mapbox.mapboxsdk.geometry.BoundingBox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
+import com.mapbox.mapboxsdk.views.InfoWindow;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import java.io.File;
@@ -39,15 +38,17 @@ public class PlaceListUpdater implements MapListener {
 
     private ArrayList<Place> placeList = new ArrayList<>();
 
-    private Handler handler;
-
     private File cacheDir;
 
     private MarkerUpdateTask updateTask;
 
     private MapTileCalculator mapTileCalculator;
 
-    public PlaceListUpdater(Context context) {
+    private FragmentManager fragmentManager;
+
+    private List<PlaceListUpdaterListener> listeners = new ArrayList<>();
+
+    public PlaceListUpdater(Activity context, FragmentManager fragmentManager) {
         mapTileCalculator = new MapTileCalculator();
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -56,13 +57,13 @@ public class PlaceListUpdater implements MapListener {
             cacheDir = context.getCacheDir();
         }
 
+        this.fragmentManager = fragmentManager;
+
         this.adapter = new PlaceListAdapter(
                 context,
                 R.layout.placelist_item_row,
                 placeList
         );
-
-        this.handler = new Handler();
     }
 
     public void updateMapView(MapView mapView) {
@@ -97,6 +98,14 @@ public class PlaceListUpdater implements MapListener {
 
     }
 
+    public ArrayList<Place> getPlaceList() {
+        return placeList;
+    }
+
+    public void registerPlaceListUpdaterListener(PlaceListUpdaterListener listener) {
+        listeners.add(listener);
+    }
+
     private class MarkerUpdateTask extends AsyncTask<Void, Void, String> {
 
         private MapView mapView;
@@ -112,7 +121,7 @@ public class PlaceListUpdater implements MapListener {
 
         @Override
         protected String doInBackground (Void... params) {
-            if(cancel == false) {
+            if (cancel == false) {
                 adapter.clear();
 
                 ArrayList<String> tiles = mapTileCalculator.calculateTiles(mapView.getBoundingBox());
@@ -155,6 +164,10 @@ public class PlaceListUpdater implements MapListener {
 
             adapter.notifyDataSetChanged();
             updateMarkers();
+
+            for (PlaceListUpdaterListener listener : listeners) {
+                listener.onPlaceListUpdate();
+            }
         }
 
         private void updateMarkers() {
@@ -166,12 +179,22 @@ public class PlaceListUpdater implements MapListener {
                 Marker marker = new Marker(mapView, place.getName(), place.getType(), place.getLocation());
                 Drawable iconImage = ContextCompat.getDrawable(mapView.getContext(), R.drawable.ic_map_marker);
                 marker.setIcon(new Icon(iconImage));
+                marker.setRelatedObject(place);
+
+                InfoWindow tooltip = new PlaceTooltip(R.layout.tooltip, mapView, marker, fragmentManager);
+                marker.setToolTip(tooltip);
 
                 mapView.addMarker(marker);
             }
 
             mapView.invalidate();
         }
+    }
+
+    public interface PlaceListUpdaterListener {
+
+        void onPlaceListUpdate();
 
     }
+
 }

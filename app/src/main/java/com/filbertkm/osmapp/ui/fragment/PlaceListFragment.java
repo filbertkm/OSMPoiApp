@@ -21,13 +21,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class PlaceListFragment extends Fragment {
+public class PlaceListFragment extends Fragment
+        implements PlaceListUpdater.PlaceListUpdaterListener {
 
     private ListView listView;
 
     private ArrayList<Place> placeList = new ArrayList<>();
-
-    private ArrayAdapter adapter;
 
     PlaceListUpdater placeListUpdater;
 
@@ -37,7 +36,7 @@ public class PlaceListFragment extends Fragment {
 
     public void setPlaceListUpdater(PlaceListUpdater placeListUpdater) {
         this.placeListUpdater = placeListUpdater;
-        adapter = this.placeListUpdater.getAdapter();
+        this.placeListUpdater.registerPlaceListUpdaterListener(this);
     }
 
     @Override
@@ -76,6 +75,10 @@ public class PlaceListFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void onPlaceListUpdate() {
+        placeList = placeListUpdater.getPlaceList();
     }
 
 }

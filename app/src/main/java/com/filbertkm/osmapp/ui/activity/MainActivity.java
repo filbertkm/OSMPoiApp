@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        placeListUpdater = new PlaceListUpdater(this);
+        placeListUpdater = new PlaceListUpdater(this, getSupportFragmentManager());
 
         launchFragment(new MapFragment(), "fragment_map");
     }
