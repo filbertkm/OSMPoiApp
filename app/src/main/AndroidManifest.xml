@@ -37,6 +37,11 @@
             android:label="@string/title_activity_place_details" >
         </activity>
 
+        <activity
+            android:name=".ui.activity.EditTagActivity"
+            android:label="@string/title_activity_edit_tag" >
+        </activity>
+
     </application>
 
 </manifest>

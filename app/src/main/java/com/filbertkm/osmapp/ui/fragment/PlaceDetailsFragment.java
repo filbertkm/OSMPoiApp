@@ -1,15 +1,19 @@
 package com.filbertkm.osmapp.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.activity.EditTagActivity;
+import com.filbertkm.osmapp.ui.activity.PlaceDetailsActivity;
 import com.filbertkm.osmapp.ui.adapter.PlaceDetailsTagsAdapter;
 
 import java.io.BufferedReader;
@@ -40,6 +44,22 @@ public class PlaceDetailsFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.place_details_tags);
         listView.setAdapter(this.buildAdapter(getActivity()));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), EditTagActivity.class);
+
+                intent.putExtra("name", name);
+                intent.putExtra("type", placeType);
+                intent.putExtra("tagKey", tagKeys.get(position));
+                intent.putExtra("tagValue", tagValues.get(position));
+
+                startActivity(intent);
+            }
+
+        });
 
         return view;
     }
