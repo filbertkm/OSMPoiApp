@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.filbertkm.osmapp"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -21,8 +21,11 @@ android {
 
 repositories {
     mavenCentral()
-}
 
+    maven {
+        url "https://raw.github.com/kolavar/android-support-v4-preferencefragment/master/maven-repository/"
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -31,9 +34,13 @@ dependencies {
         transitive = true
     }
 
+    compile ('com.android.support:support-v4-preferencefragment:1.0.0@aar') {
+        exclude module: 'support-v4'
+    }
+
     compile 'ch.acra:acra:4.6.2'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.http-client:google-http-client:1.20.0'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.squareup.okhttp:okhttp:2.4.0'

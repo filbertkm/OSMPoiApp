@@ -64,6 +64,7 @@ public class PlaceListFragment extends Fragment
                     valueStringBuilder.append(tag.getValue().toString() + "\n");
                 }
 
+                intent.putExtra("nodeId", placeList.get(position).getId());
                 intent.putExtra("name", placeList.get(position).getName());
                 intent.putExtra("type", placeList.get(position).getType());
                 intent.putExtra("tagKeys", keyStringBuilder.toString());

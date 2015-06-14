@@ -21,6 +21,7 @@ public class EditTagActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        fragment.setNodeId(extras.getLong("nodeId"));
         fragment.setName(extras.getString("name"));
         fragment.setTagKey(extras.getString("tagKey"));
         fragment.setTagValue(extras.getString("tagValue"));

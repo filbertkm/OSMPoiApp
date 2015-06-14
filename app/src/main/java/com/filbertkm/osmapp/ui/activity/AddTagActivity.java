@@ -18,6 +18,7 @@ public class AddTagActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        fragment.setNodeId(extras.getLong("nodeId"));
         fragment.setName(extras.getString("name"));
 
         getSupportFragmentManager().beginTransaction()

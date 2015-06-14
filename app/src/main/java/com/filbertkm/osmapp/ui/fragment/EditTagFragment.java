@@ -11,9 +11,9 @@ import com.filbertkm.osmapp.R;
 
 public class EditTagFragment extends Fragment {
 
-    String name = "Place name";
+    Long nodeId;
 
-    String placeType = "Place type";
+    String name = "Place name";
 
     String tagKey;
 
@@ -35,6 +35,8 @@ public class EditTagFragment extends Fragment {
 
         return view;
     }
+
+    public void setNodeId(Long nodeId) { this.nodeId = nodeId; }
 
     public void setName(String name) {
         this.name = name;

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 public class PlaceDetailsFragment extends Fragment {
 
+    Long nodeId;
+
     String name = "Place name";
 
     String placeType = "Place type";
@@ -52,6 +54,7 @@ public class PlaceDetailsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), EditTagActivity.class);
 
+                intent.putExtra("nodeId", nodeId);
                 intent.putExtra("name", name);
                 intent.putExtra("tagKey", tagKeys.get(position));
                 intent.putExtra("tagValue", tagValues.get(position));
@@ -67,6 +70,7 @@ public class PlaceDetailsFragment extends Fragment {
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), AddTagActivity.class);
 
+                        intent.putExtra("nodeId", nodeId);
                         intent.putExtra("name", name);
 
                         startActivity(intent);
@@ -76,6 +80,8 @@ public class PlaceDetailsFragment extends Fragment {
 
         return view;
     }
+
+    public void setNodeId(Long nodeId) { this.nodeId = nodeId; }
 
     public void setName(String name) {
         this.name = name;

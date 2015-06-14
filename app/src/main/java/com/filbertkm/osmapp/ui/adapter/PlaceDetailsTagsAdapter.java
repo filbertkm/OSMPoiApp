@@ -18,8 +18,8 @@ public class PlaceDetailsTagsAdapter extends ArrayAdapter<String> {
 
     private ArrayList tagValues;
 
-    public PlaceDetailsTagsAdapter(Context context, int resourceId, List<String> list, ArrayList<String> tagValues) {
-        super(context, resourceId, list);
+    public PlaceDetailsTagsAdapter(Context context, int resourceId, List<String> tagKeys, ArrayList<String> tagValues) {
+        super(context, resourceId, tagKeys);
         this.tagValues = tagValues;
     }
 

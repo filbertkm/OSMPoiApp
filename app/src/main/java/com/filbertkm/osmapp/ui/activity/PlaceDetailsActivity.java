@@ -20,6 +20,7 @@ public class PlaceDetailsActivity extends ActionBarActivity {
 
             PlaceDetailsFragment fragment = new PlaceDetailsFragment();
 
+            fragment.setNodeId(extras.getLong("nodeId"));
             fragment.setName(extras.getString("name"));
             fragment.setPlaceType(extras.getString("type"));
             fragment.setTagKeys(extras.getString("tagKeys"));
