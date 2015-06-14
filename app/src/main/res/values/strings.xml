@@ -16,6 +16,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="title_activity_add_tag">Add tag</string>
     <string name="title_activity_edit_tag">Edit tag</string>
     <string name="title_activity_place_details">Place details</string>
     <string name="title_section1">Map</string>

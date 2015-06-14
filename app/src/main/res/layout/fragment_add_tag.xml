@@ -6,7 +6,7 @@
     tools:context="com.filbertkm.osmapp.ui.activity.EditTagActivity$EditTagFragment">
 
     <TextView
-        android:id="@+id/edit_tag_place_name"
+        android:id="@+id/add_tag_place_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
@@ -20,24 +20,27 @@
         android:textColor="#ffffffff"
         android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_tag_key"
-        android:layout_below="@+id/edit_tag_place_name"
+    <EditText
+        android:id="@+id/add_tag_key"
+        android:hint="Tag key"
+        android:inputType="text"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="24dp"
-        tools:text="Tag key"
-        android:textSize="18dp"
-        android:layout_marginRight="15dp" />
+        android:layout_below="@+id/add_tag_place_name"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:textSize="17sp"
+        android:ems="10"
+        android:minLines="1" />
 
     <EditText
-        android:id="@+id/edit_tag_value"
+        android:id="@+id/add_tag_value"
         android:hint="Tag value"
         android:inputType="text"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/edit_tag_key"
+        android:layout_below="@+id/add_tag_key"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
@@ -48,10 +51,10 @@
         android:minLines="1" />
 
     <Button
-        android:id="@+id/button_edit_tag_submit"
+        android:id="@+id/button_add_tag_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_tag_value"
+        android:layout_below="@+id/add_tag_value"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:text="Submit" />

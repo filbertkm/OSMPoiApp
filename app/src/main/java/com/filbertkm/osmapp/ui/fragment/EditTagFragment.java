@@ -27,9 +27,6 @@ public class EditTagFragment extends Fragment {
         TextView placeNameView = (TextView) view.findViewById(R.id.edit_tag_place_name);
         placeNameView.setText(name);
 
-        TextView placeTypeView = (TextView) view.findViewById(R.id.edit_tag_place_type);
-        placeTypeView.setText(placeType);
-
         TextView tagKeyView = (TextView) view.findViewById(R.id.edit_tag_key);
         tagKeyView.setText(tagKey);
 
@@ -41,10 +38,6 @@ public class EditTagFragment extends Fragment {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPlaceType(String placeType) {
-        this.placeType = placeType;
     }
 
     public void setTagKey(String tagKey) {

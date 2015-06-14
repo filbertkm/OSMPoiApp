@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.activity.AddTagActivity;
 import com.filbertkm.osmapp.ui.activity.EditTagActivity;
 import com.filbertkm.osmapp.ui.activity.PlaceDetailsActivity;
 import com.filbertkm.osmapp.ui.adapter.PlaceDetailsTagsAdapter;
@@ -52,7 +53,6 @@ public class PlaceDetailsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), EditTagActivity.class);
 
                 intent.putExtra("name", name);
-                intent.putExtra("type", placeType);
                 intent.putExtra("tagKey", tagKeys.get(position));
                 intent.putExtra("tagValue", tagValues.get(position));
 
@@ -60,6 +60,19 @@ public class PlaceDetailsFragment extends Fragment {
             }
 
         });
+
+        view.findViewById(R.id.place_details_add_tag_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), AddTagActivity.class);
+
+                        intent.putExtra("name", name);
+
+                        startActivity(intent);
+                    }
+                }
+        );
 
         return view;
     }
