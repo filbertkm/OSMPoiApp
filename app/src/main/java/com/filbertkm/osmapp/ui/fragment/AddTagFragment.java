@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class AddTagFragment extends Fragment {
         protected String doInBackground(String... urls) {
             return "success!!";
         }
-        
+
         @Override
         protected void onPostExecute(String result) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.filbertkm.osmapp.PlaceListUpdater;
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.ui.fragment.LoginFragment;
 import com.filbertkm.osmapp.ui.fragment.MapFragment;
 import com.filbertkm.osmapp.ui.fragment.PlaceListFragment;
 import com.filbertkm.osmapp.ui.fragment.SettingsFragment;
@@ -111,6 +112,9 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_settings:
                 launchFragment(new SettingsFragment(), "fragment_settings");
+                return true;
+            case R.id.action_login:
+                launchFragment(new LoginFragment(), "fragment_login");
                 return true;
             default:
                 throw new RuntimeException("Unknown menu item selected");

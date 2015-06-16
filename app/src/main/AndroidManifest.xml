@@ -47,6 +47,11 @@
             android:label="@string/title_activity_edit_tag" >
         </activity>
 
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+
     </application>
 
 </manifest>
