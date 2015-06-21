@@ -1,32 +1,24 @@
 package com.filbertkm.osmapp.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.Comparator;
 import java.util.Map;
 
-public class Place {
+public class Place implements Parcelable {
 
     private Long id;
 
-    private String parentType;
-
     private String type = "other";
-
     private String name;
+    private Map tags;
+    private Map attributes;
 
     private LatLng location;
-
-    private Map tags;
-
-    public void setParentType(String parentType) {
-        this.parentType = parentType;
-    }
-
-    public String getParentType() {
-        return this.parentType;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -66,6 +58,40 @@ public class Place {
         return this.tags;
     }
 
+    public void setAttributes(Map attributes) { this.attributes = attributes; }
+
+    public Map getAttributes() {
+        return attributes;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(type);
+        dest.writeString(name);
+        dest.writeDouble(location.getLatitude());
+        dest.writeDouble(location.getLongitude());
+        dest.writeMap(tags);
+        dest.writeMap(attributes);
+    }
+
+    public Place() {
+
+    }
+
+    private Place(Parcel parcel) {
+        id = parcel.readLong();
+        type = parcel.readString();
+        name = parcel.readString();
+        location = new LatLng(parcel.readDouble(), parcel.readDouble());
+        parcel.readMap(tags, Map.class.getClassLoader());
+        parcel.readMap(attributes, Map.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public static Comparator PlaceComparator = new Comparator<Place>() {
 
         public int compare(Place node1, Place node2) {
@@ -73,6 +99,18 @@ public class Place {
             String node2Id = node2.getName();
 
             return node1Id.compareTo(node2Id);
+        }
+
+    };
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        public Place createFromParcel(Parcel parcel) {
+            return new Place(parcel);
+        }
+
+        public Place[] newArray(int size) {
+            return new Place[size];
         }
 
     };

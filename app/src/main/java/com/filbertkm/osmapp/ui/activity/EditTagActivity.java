@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.ui.fragment.EditTagFragment;
 import com.filbertkm.osmapp.ui.fragment.PlaceDetailsFragment;
 
@@ -21,10 +22,11 @@ public class EditTagActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        fragment.setNodeId(extras.getLong("nodeId"));
-        fragment.setName(extras.getString("name"));
+        Place place = extras.getParcelable("place");
+
         fragment.setTagKey(extras.getString("tagKey"));
         fragment.setTagValue(extras.getString("tagValue"));
+        fragment.setPlace(place);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)

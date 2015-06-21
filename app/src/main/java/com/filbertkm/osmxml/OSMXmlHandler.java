@@ -10,9 +10,7 @@ import java.util.Map;
 
 public class OSMXmlHandler extends DefaultHandler {
 
-    private String currentElement;
-
-    private List nodes = new ArrayList<OSMNode>();
+    private List nodes = new ArrayList<>();
 
     private OSMNode node;
 
@@ -20,10 +18,8 @@ public class OSMXmlHandler extends DefaultHandler {
 
     @Override
     public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, Attributes attributes) {
-        this.currentElement = qName;
-
-        if(qName == "node") {
-            this.node = new OSMNode();
+        if (qName == "node") {
+            node = new OSMNode();
 
             if (attributes != null) {
                 Integer length = attributes.getLength();
@@ -32,22 +28,24 @@ public class OSMXmlHandler extends DefaultHandler {
                     String name = attributes.getQName(i);
 
                     if (name == "id") {
-                        this.node.setId(attributes.getValue(i));
+                        node.setId(attributes.getValue(i));
                     } else if (name == "lat") {
-                        this.node.setLat(attributes.getValue(i));
+                        node.setLat(attributes.getValue(i));
                     } else if (name == "lon") {
-                        this.node.setLon(attributes.getValue(i));
+                        node.setLon(attributes.getValue(i));
+                    } else {
+                        node.setAttibute(name, attributes.getValue(i));
                     }
                 }
             }
         }
 
-        if(this.node != null && qName == "tag") {
-            if (this.tags == null) {
-                this.tags = new HashMap();
+        if (node != null && qName == "tag") {
+            if (tags == null) {
+                tags = new HashMap();
             }
 
-            if(attributes != null) {
+            if (attributes != null) {
                 Integer length = attributes.getLength();
 
                 String key = null;
@@ -63,7 +61,7 @@ public class OSMXmlHandler extends DefaultHandler {
                     }
                 }
 
-                this.tags.put(key,value);
+                tags.put(key,value);
             }
         }
     }
@@ -75,19 +73,19 @@ public class OSMXmlHandler extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        if ((this.node != null ) && (qName == "node")) {
-            if(this.tags != null) {
-                this.node.setTags(this.tags);
-                this.tags = null;
+        if ((node != null ) && (qName == "node")) {
+            if(tags != null) {
+                node.setTags(tags);
+                tags = null;
             }
 
-            nodes.add(this.node);
-            this.node = null;
+            nodes.add(node);
+            node = null;
         }
     }
 
     public List<OSMNode> getNodes() {
-        return this.nodes;
+        return nodes;
     }
 
 }

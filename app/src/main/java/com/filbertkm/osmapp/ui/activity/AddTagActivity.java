@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.ui.fragment.AddTagFragment;
 
 
@@ -18,8 +19,8 @@ public class AddTagActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        fragment.setNodeId(extras.getLong("nodeId"));
-        fragment.setName(extras.getString("name"));
+        Place place = extras.getParcelable("place");
+        fragment.setPlace(place);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)

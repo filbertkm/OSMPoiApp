@@ -1,17 +1,11 @@
 package com.filbertkm.osmapi;
 
+import android.util.Base64;
 import android.util.Log;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
 
-import com.filbertkm.osmxml.OSMNode;
-import com.filbertkm.osmxml.OSMXmlParser;
+import com.filbertkm.osmxml.OSMPermissionsXmlParser;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
@@ -19,8 +13,6 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 
-import com.google.api.client.util.IOUtils;
-import com.jakewharton.disklrucache.DiskLruCache;
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 
 public class OSMClient {
@@ -41,16 +33,42 @@ public class OSMClient {
         return doRequest(apiPath);
     }
 
-    private String doOriginalRequest(String apiPath) {
-        retries = 0;
-        return doRequest(apiPath);
-    }
+    public String login(String username, String password) {
+        String authString = username + ":" + password;
+        String encoding = Base64.encodeToString(authString.getBytes(), Base64.DEFAULT);
 
-    private String doRequest(String apiPath) {
-        GenericUrl url = new GenericUrl(baseUri + apiPath);
         HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory();
 
         try {
+            GenericUrl url = new GenericUrl(baseUri + "/permissions");
+            HttpRequest request = requestFactory.buildGetRequest(url);
+            request.getHeaders().setAuthorization("Basic " + encoding);
+
+            HttpResponse response = request.execute();
+
+            if (response.isSuccessStatusCode()) {
+                OSMPermissionsXmlParser parser = new OSMPermissionsXmlParser();
+                String responseString = response.parseAsString();
+                Log.i("OSMPoiApp", responseString);
+
+                if (parser.parse(responseString) == true) {
+                    return encoding;
+                }
+            } else {
+                Log.i("osmapp", "response not successful");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private String doRequest(String apiPath) {
+        HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory();
+
+        try {
+            GenericUrl url = new GenericUrl(baseUri + apiPath);
             HttpRequest request = requestFactory.buildGetRequest(url);
             HttpResponse response = request.execute();
 

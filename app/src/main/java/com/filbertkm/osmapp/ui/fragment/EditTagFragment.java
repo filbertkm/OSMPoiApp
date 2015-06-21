@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.model.Place;
 
 public class EditTagFragment extends Fragment {
-
-    Long nodeId;
-
-    String name = "Place name";
 
     String tagKey;
 
     String tagValue;
+
+    Place place;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +24,7 @@ public class EditTagFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_tag, container, false);
 
         TextView placeNameView = (TextView) view.findViewById(R.id.edit_tag_place_name);
-        placeNameView.setText(name);
+        placeNameView.setText(place.getName());
 
         TextView tagKeyView = (TextView) view.findViewById(R.id.edit_tag_key);
         tagKeyView.setText(tagKey);
@@ -36,12 +35,6 @@ public class EditTagFragment extends Fragment {
         return view;
     }
 
-    public void setNodeId(Long nodeId) { this.nodeId = nodeId; }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setTagKey(String tagKey) {
         this.tagKey = tagKey;
     }
@@ -49,5 +42,7 @@ public class EditTagFragment extends Fragment {
     public void setTagValue(String tagValue) {
         this.tagValue = tagValue;
     }
+
+    public void setPlace(Place place) { this.place = place; }
 
 }

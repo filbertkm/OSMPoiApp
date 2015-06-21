@@ -1,5 +1,7 @@
 package com.filbertkm.osmapp.ui.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.filbertkm.osmapi.OSMClient;
 import com.filbertkm.osmapp.R;
 
 import java.io.BufferedReader;
@@ -58,47 +61,29 @@ public class LoginFragment extends Fragment {
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            Log.i("OSMPoiApp", params[0]);
+            OSMClient client = new OSMClient();
+            String loginHash = client.login(params[0], params[1]);
 
-            try {
-                URL reqUrl = new URL("https://api.openstreetmap.org/api/0.6/permissions");
+            if (loginHash != null) {
+                SharedPreferences preferences = getActivity().getSharedPreferences(
+                    "user",
+                    Activity.MODE_PRIVATE
+                );
 
-                String authString = params[0] + ":" + params[1];
-                String encoding = Base64.encodeToString(authString.getBytes(), Base64.DEFAULT);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("loginhash", loginHash);
 
-                try {
-                    HttpsURLConnection connection = (HttpsURLConnection) reqUrl.openConnection();
-
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Authorization", "Basic " + encoding);
-
-                    InputStream content = connection.getInputStream();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(content));
-
-                    String line;
-
-                    while ((line = in.readLine()) != null) {
-                        Log.i("OSMPoiApp", line);
-                    }
-                } catch (IOException ex) {
-                    Log.i("OSMPoiApp", "omg");
-                    ex.printStackTrace();
-                    // omg!
-                }
-            } catch (MalformedURLException ex) {
-                Log.i("OSMPoiApp", "omg");
-                ex.printStackTrace();
-                // omg!
+                return "success";
+            } else {
+                return "fail";
             }
-
-            return "success!!";
         }
 
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(
                     getActivity().getBaseContext(),
-                    "success " + username + "!",
+                    result + ": " + username + "!",
                     Toast.LENGTH_LONG
             ).show();
         }

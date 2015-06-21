@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.model.Place;
 import com.filbertkm.osmapp.ui.fragment.PlaceDetailsFragment;
 
 
@@ -20,11 +21,8 @@ public class PlaceDetailsActivity extends ActionBarActivity {
 
             PlaceDetailsFragment fragment = new PlaceDetailsFragment();
 
-            fragment.setNodeId(extras.getLong("nodeId"));
-            fragment.setName(extras.getString("name"));
-            fragment.setPlaceType(extras.getString("type"));
-            fragment.setTagKeys(extras.getString("tagKeys"));
-            fragment.setTagValues(extras.getString("tagValues"));
+            Place place = extras.getParcelable("place");
+            fragment.setPlace(place);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)

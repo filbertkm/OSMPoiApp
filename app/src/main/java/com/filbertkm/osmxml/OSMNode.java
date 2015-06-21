@@ -1,5 +1,9 @@
 package com.filbertkm.osmxml;
 
+import android.util.ArrayMap;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OSMNode {
@@ -8,6 +12,7 @@ public class OSMNode {
     private String lat;
     private String lon;
     private Map<String,String> tags;
+    private Map<String,String> attributes = new HashMap<>();
 
     public void setId(String id) {
         this.id = id;
@@ -39,6 +44,14 @@ public class OSMNode {
 
     public Map<String,String> getTags() {
         return this.tags;
+    }
+
+    public void setAttibute(String key, String value) {
+        attributes.put(key, value);
+    }
+
+    public Map<String,String> getAttributes() {
+        return attributes;
     }
 
 }

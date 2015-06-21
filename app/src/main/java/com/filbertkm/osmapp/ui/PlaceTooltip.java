@@ -50,21 +50,7 @@ public class PlaceTooltip extends InfoWindow {
         private void launchPlaceFragment(Place place) {
             PlaceDetailsFragment fragment = new PlaceDetailsFragment();
 
-            fragment.setName(place.getName());
-            fragment.setPlaceType(place.getType());
-
-            StringBuilder keyStringBuilder = new StringBuilder();
-            StringBuilder valueStringBuilder = new StringBuilder();
-
-            Iterator iterator = place.getTags().entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry tag = (Map.Entry) iterator.next();
-                keyStringBuilder.append(tag.getKey().toString() + "\n");
-                valueStringBuilder.append(tag.getValue().toString() + "\n");
-            }
-
-            fragment.setTagKeys(keyStringBuilder.toString());
-            fragment.setTagValues(valueStringBuilder.toString());
+            fragment.setPlace(place);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)

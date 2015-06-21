@@ -143,6 +143,8 @@ public class OSMMapDataLoader {
                         )
                 );
 
+                place.setAttributes(node.getAttributes());
+
                 Iterator entries = tags.entrySet().iterator();
 
                 while (entries.hasNext()) {

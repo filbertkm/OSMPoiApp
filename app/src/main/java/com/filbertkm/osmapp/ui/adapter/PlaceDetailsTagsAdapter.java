@@ -9,17 +9,35 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.filbertkm.osmapp.R;
+import com.filbertkm.osmapp.model.Place;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class PlaceDetailsTagsAdapter extends ArrayAdapter<String> {
 
-    private ArrayList tagValues;
+    private List<String> tagValues;
 
-    public PlaceDetailsTagsAdapter(Context context, int resourceId, List<String> tagKeys, ArrayList<String> tagValues) {
+    public static PlaceDetailsTagsAdapter newFromTags(Context context, int resourceId, Map tags) {
+        List<String> tagKeys = new ArrayList<>();
+        List<String> tagValues = new ArrayList<>();
+
+        Iterator iterator = tags.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry tagEntry = (Map.Entry) iterator.next();
+            tagKeys.add(tagEntry.getKey().toString());
+            tagValues.add(tagEntry.getValue().toString());
+        }
+
+        return new PlaceDetailsTagsAdapter(context, resourceId, tagKeys, tagValues);
+    }
+
+    public PlaceDetailsTagsAdapter(Context context, int resourceId, List<String>tagKeys, List<String> tagValues) {
         super(context, resourceId, tagKeys);
+
         this.tagValues = tagValues;
     }
 
